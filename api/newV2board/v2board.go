@@ -55,9 +55,16 @@ func New(apiConfig *api.Config) *APIClient {
 	})
 	client.SetBaseURL(apiConfig.APIHost)
 	// Create Key for each requests
+	var nodeType string
+	if apiConfig.NodeType == "V2ray" && apiConfig.EnableVless {
+		nodeType = "vless"
+	} else {
+		nodeType = strings.ToLower(apiConfig.NodeType)
+	}
+	// Create Key for each requests
 	client.SetQueryParams(map[string]string{
 		"node_id":   strconv.Itoa(apiConfig.NodeID),
-		"node_type": strings.ToLower(apiConfig.NodeType),
+		"node_type": nodeType,
 		"token":     apiConfig.Key,
 	})
 	// Read local rule list
